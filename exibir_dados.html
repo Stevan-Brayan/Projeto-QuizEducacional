@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados do Quiz</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultados do Quiz</h1>
+    <table id="tabela-resultados">
+        <thead>
+            <tr>
+                <th>Nome do Aluno</th>
+                <th>RA do Aluno</th>
+                <th>Matéria</th>
+                <th>Acertos</th>
+                <th>Erros</th>
+                <th>Porcentagem</th>
+                <th>Nota Final</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+    </table>
+
+    <script>
+        
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost/quiz/api_resultados.php');
+                const data = await response.json();
+
+                const tbody = document.querySelector("#tabela-resultados tbody");
+                tbody.innerHTML = ""; // Limpa o conteúdo atual
+
+                data.forEach(row => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${row.nome_aluno}</td>
+                        <td>${row.ra_aluno}</td>
+                        <td>${row.materia}</td>
+                        <td>${row.acertos}</td>
+                        <td>${row.erros}</td>
+                        <td>${row.porcentagem}%</td>
+                        <td>${row.nota_final}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error);
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
